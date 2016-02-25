@@ -36,6 +36,8 @@
 
 <?php
 
+	$everything_was_okay = true;
+
 	//********************
 	//To field validation
 	//********************
@@ -59,6 +61,7 @@
 		//if its empty
 		if(empty ($_GET["who"])){
 			//its empty
+			$everything_was_okay = false;
 			echo "Please enter the name to who you address <br>"; 
 			
 		}else{
@@ -68,11 +71,11 @@
 		
 	}else{
 		//echo "there is no such thing as message";
+		$everything_was_okay = false;
 		
-		
+	}	
 // -------------------------------------------------------------------
 		
-	}
 	
 	
 		if(isset($_GET["message"])){
@@ -83,6 +86,7 @@
 		//if its empty
 		if(empty ($_GET["message"])){
 			//its empty
+			$everything_was_okay = false;
 			echo "Please enter the message <br>";
 			
 		}else{
@@ -92,7 +96,7 @@
 		
 	}else{
 		//echo "there is no such thing as message";
-		
+		$everything_was_okay = false;
 	}
 	
 // -------------------------------------------------------------------
@@ -105,6 +109,7 @@
 		//if its empty
 		if(empty ($_GET["from_who"])){
 			//its empty
+		$everything_was_okay = false;
 			echo "Please type your name <br>";
 			
 		}else{
@@ -114,7 +119,7 @@
 		
 	}else{
 		//echo "there is no such thing as message";
-		
+		$everything_was_okay = false;
 	}
 	
 // -------------------------------------------------------------------
@@ -129,7 +134,17 @@
 	
 	//echo "Message from ".$from_who. " to ".$who. " - " .$my_message;
 
+	
+	/*********************************************
+	**************	SAVE TO DB	******************
+	*********************************************/
 
+	// ? was everthing okay
+	if($everything_was_okay == true){
+		
+		echo "Saving to database ...";
+		
+	}
 ?>
 
 
