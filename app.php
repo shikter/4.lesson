@@ -20,13 +20,13 @@
 <form method="get">
 
 
-<li> 	<label for="who">Name of recipient:* <label><br>
+<li> 	<label for="who">Name of recipient*: <label><br>
 		<input type="text" name="who"><br>
 		
-<li> 	<label for="message">Message:* <label><br>
+<li> 	<label for="message">Message*: <label><br>
 		<input type="text" width="160" valign="top" name="message"><br>
 		
-<li> 	<label for="from_who">Your name:* <label><br>
+<li> 	<label for="from_who">Your name*: <label><br>
 		<input type="text" name="from_who"><br><br>
 		
 		<input type="submit" value="Send"><br>
@@ -35,6 +35,11 @@
 </nav>
 
 <?php
+
+	//require another php file
+	// ../../../ means > 3 folders back
+	require_once("../../../config.php");
+	
 
 	$everything_was_okay = true;
 
@@ -135,14 +140,47 @@
 	//echo "Message from ".$from_who. " to ".$who. " - " .$my_message;
 
 	
-	/*********************************************
-	**************	SAVE TO DB	******************
-	*********************************************/
+	/****************************
+	*********SAVE TO DB**********
+	*****************************/
 
 	// ? was everthing okay
 	if($everything_was_okay == true){
 		
 		echo "Saving to database ...";
+		
+		//connection with the username and password
+		//access username from config
+		
+		//echo $db_username;
+		
+		
+		
+		//1 servername
+		//2 username
+		//3 password
+		//4 database
+		$mysql = new mysqli("localhost", $db_username, $db_password, "webpr2016_shikter");
+		
+		$stmt = $mysql->prepare("INSERT INTO messages_sample(recipient, message, sender) VALUES(?,?,?)");
+		
+		//echo error
+		echo $mysql->error;
+		
+		// we are replacing question marks with values
+		// s -string, date or smth that is based on characters and numbers.
+		// i - integer, number
+		// d - decimal, floatval
+		
+		// for each question mark its type with one letter
+		$stmt->bind_param("sss", $_GET["who"], $_GET["message"], $_GET["from_who"]);
+		
+		//save
+		if($stmt->execute()){
+			echo "saved sucessfully";
+		}else{
+			echo $stmt->error;
+		}
 		
 	}
 ?>
@@ -199,6 +237,12 @@
 				if(!date){
 					error += "<br>Please select date";
 					formIsValid = false;
+				}else{
+					if(preg_match("^[0-3][0-9].[0-1][0-9].[0-9]{4}$",$date)){
+						//true
+					}else{
+						formIsValid = false;
+					}
 				}
 				
 				if(!genre){
@@ -268,7 +312,7 @@
 					</td>
 					
 					<td>
-			</span><input type="numbers" name="date" id="date" style="width: 300px;" placeholder="31.12.2016">
+			</span><input type="date" name="date" id="date" style="width: 300px;" placeholder="31.12.2016">
 					</td>
 				</tr>
 				
@@ -330,7 +374,7 @@
 <p>You can see how I develop my skills.
 You can find here my first messanger application. Which is on the head of page.
 </p>
-<center><img src="http://www.tlu.ee/~shikter/ristmed2/images/php-mysql-html-css.png" alt="PHP + MySQL & HTML5 + CSS3" width="325";></center>
+<center><img src="../../homeworks/1.homework/img/php-mysql-html-css.png" alt="PHP + MySQL & HTML5 + CSS3" width="325";></center>
 </section>
 
 
